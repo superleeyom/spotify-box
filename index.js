@@ -12,6 +12,7 @@ const octo = new Octokit({
 
 async function main() {
   const json = await getTopTracks()
+  console.log(json)
   await updateTopTracks(json)
 }
 
