@@ -62,7 +62,7 @@ async function getTopTracks() {
 
         var lines = [];
         tracks.forEach(track => {
-            lines.push(` ▶ ${truncate(track.title + " ", 35).padEnd(25, '.')} 🎵 ${truncate(track.artist + " ", 16)}`)
+            lines.push(` ▶ ${truncate(track.title + " ", 35).padEnd(30, '.')} 🎵 ${truncate(track.artist + " ", 16)}`)
         })
         return lines.join("\n");
     } catch (error) {
