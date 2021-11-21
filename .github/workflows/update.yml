@@ -1,0 +1,21 @@
+name: Update gist with latest songs
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+jobs:
+  spotify-box:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm install
+      - name: Update
+        uses: ./
+        env:
+          GIST_ID: ${{ secrets.GIST_ID }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          SPOTIFY_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          SPOTIFY_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          SPOTIFY_REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+          TYPE: recently_played
+          TIME_RANGE: short_term

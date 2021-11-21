@@ -1,15 +1,24 @@
 {
   "name": "spotify-box",
-  "version": "0.0.1",
-  "description": "Update a gist to contain your weekly top tracks on Spotify.",
+  "version": "1.0.0",
+  "description": "🎧 Update a gist with your top spotify tracks",
   "main": "index.js",
-  "repository": "git@github.com:izayl/Spotify-box.git",
-  "author": "izayl <izayl@163.com>",
-  "license": "Apache-2.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Aveek-Saha/spotify-box.git"
+  },
+  "author": "Aveek Saha <aveek.s98@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Aveek-Saha/spotify-box/issues"
+  },
+  "homepage": "https://github.com/Aveek-Saha/spotify-box#readme",
   "dependencies": {
-    "@octokit/rest": "^18.0.12",
+    "@octokit/rest": "^18.0.6",
     "dotenv": "^8.2.0",
-    "eastasianwidth": "^0.2.0",
-    "node-fetch": "^2.6.1"
+    "spotify-web-api-node": "^5.0.0"
   }
 }
