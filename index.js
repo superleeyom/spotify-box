@@ -37,8 +37,8 @@ async function updateTopTracks(json) {
   const lines = []
   for (let index = 0; index < Math.min(tracks.length, 10); index++) {
     let { name, artist } = tracks[index]
-    name = truncate(name, 25)
-    artist = truncate(artist, 19)
+    // name = truncate(name, 25)
+    // artist = truncate(artist, 19)
 
     // const line = [
     //   name.padEnd(34 + name.length - eaw.length(name)),
@@ -68,15 +68,15 @@ async function updateTopTracks(json) {
   }
 }
 
-function truncate(str, len) {
-  // string longer than `len`
-  for (let i = len - 2; i >= 0; i--) {
-    if (eaw.length(str) <= len) break
-    str = str.substring(0, i)
-  }
+// function truncate(str, len) {
+//   // string longer than `len`
+//   for (let i = len - 2; i >= 0; i--) {
+//     if (eaw.length(str) <= len) break
+//     str = str.substring(0, i)
+//   }
 
-  return str.trim()
-}
+//   return str.trim()
+// }
 
 function truncatePlus(str, n){
     return (str.length > n) ? str.substr(0, n-1) + '…' : str;
