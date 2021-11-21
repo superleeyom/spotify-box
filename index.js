@@ -12,7 +12,6 @@ const octo = new Octokit({
 
 async function main() {
   const json = await getTopTracks()
-  console.log(json)
   await updateTopTracks(json)
 }
 
@@ -24,8 +23,9 @@ async function updateTopTracks(json) {
     })
   } catch (error) {
     console.error(
-      `spotify-box ran into an issue for getting your gist:\n${error}`
+      `spotify-box ran into an issue for getting your gist ${gist_id}:\n${error}`
     )
+    return
   }
 
   const tracks = json.items.map(item => ({
@@ -40,11 +40,14 @@ async function updateTopTracks(json) {
     name = truncate(name, 25)
     artist = truncate(artist, 19)
 
-    const line = [
-      name.padEnd(34 + name.length - eaw.length(name)),
-      artist.padStart(20 + artist.length - eaw.length(artist)),
-    ]
-    lines.push(line.join(''))
+    // const line = [
+    //   name.padEnd(34 + name.length - eaw.length(name)),
+    //   artist.padStart(20 + artist.length - eaw.length(artist)),
+    // ]
+    // lines.push(line.join(''))
+
+    // 新的拼接方式
+    lines.push(` ▶ ${truncatePlus(name + " ", 35).padEnd(35, '.')} 🎵 ${truncatePlus(artist + " ", 16)}`)
   }
 
   try {
@@ -53,7 +56,7 @@ async function updateTopTracks(json) {
       gist_id,
       files: {
         [filename]: {
-          filename: '🎵 My Spotify Top Track',
+          filename: '🎵 My Spotify Top Tracks',
           content: lines.join('\n'),
         },
       },
@@ -74,6 +77,10 @@ function truncate(str, len) {
 
   return str.trim()
 }
+
+function truncatePlus(str, n){
+    return (str.length > n) ? str.substr(0, n-1) + '…' : str;
+};
 
 ;(async () => {
   await main()
