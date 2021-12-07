@@ -1,11 +1,11 @@
-name: rhythm-box
-author: Aveek Saha
-description: GitHub Action for injecting your top spotify tracks/artists into a gist
+name: spotify-box
+author: izayl
+description: GitHub Action for Update a gist to contain your weekly top tracks on Spotify.
 
 runs:
   using: node12
   main: ./index.js
 
 branding:
-  icon: headphones
-  color: blue
+  icon: music
+  color: green

@@ -1,55 +1,90 @@
-<p align="center">
-  <img width="450" src="https://user-images.githubusercontent.com/31800695/95853311-d40d3400-0d72-11eb-86f5-460d4214001c.png">
+<p align='center'>
+  <img width="400" src="https://user-images.githubusercontent.com/10740043/103472132-b0cbb100-4dc4-11eb-97a2-4261c4c5c4f5.png">
   <h3 align="center">spotify-box</h3>
-  <p align="center">🎧 Update a pinned gist to show your top Spotify tracks/artists</p>
+  <p align="center">Automatic update pinned gist to show your recent Spotify top tracks.</p>
+  <p align="center"><sub>Don't forget to leave a ⭐ if you found this useful.</sub></p>
 </p>
 
 ---
+> 📌✨ For more pinned-gist projects like this one, check out: <https://github.com/matchai/awesome-pinned-gists>
 
-> 📌✨ For more pinned-gist projects like this one, check out: https://github.com/matchai/awesome-pinned-gists
+## ✨ Inspiration
 
-# Setup
+This code was heavily inspired by [@jacc's music-box](https://github.com/jacc/music-box).
 
-## Prep work
+## 🎒 Prep Work
 
-### GitHub
+1. Create a new public GitHub Gist (<https://gist.github.com/>)
+2. Create a token with the `gist` scope and copy it. (<https://github.com/settings/tokens/new>)
+3. Create a Spotify Application and get certified, detail steps you can see below.
 
-1. Create a new public GitHub Gist. (https://gist.github.com/)
-1. Create an access token with the `gist` scope and copy it. (https://github.com/settings/tokens/new)
+<details><summary>Spotify Authorization Steps</summary>
+<p>
 
-### Spotify
+### 1. Create new Spotify Application
 
-1. Go to the Spotify Developer Dashboard and log in. (https://developer.spotify.com/dashboard/)
-1. Create an app with a name and description.
-1. Copy the `Client ID` and `Client secret`.
-1. Click on edit settings and add `http://localhost:5000/` as a redirect URI.
-1. In your browser enter this URL and replace <client_id> in this url: 
-    ```
-    https://accounts.spotify.com/authorize?client_id=<client_id>
-    &response_type=code&redirect_uri=http://localhost:5000/&scope=user-top-read
-    ```
-1. After this you should see an url like this in your address bar: `http://localhost:5000/?code=<code>`. Copy this code query parameter.
-1. Use this website to generate a base 64 string of the form `client_id:client_secret`. (https://www.base64encode.org/)
-1. In a terminal, run the following command and use the base 64 encoded string and code from the previous steps.
+Visit <https://developer.spotify.com/dashboard/applications> login and create a new Application
 
-    ```command
-    curl -H "Authorization: Basic <base 64 str>" -d grant_type=authorization_code -d code=<code> 
-    -d redirect_uri=http://localhost:5000/ https://accounts.spotify.com/api/token 
-    ```
-1. A JSON response containing a `refresh_token` will be returned. Copy this value.
+After create, you will get your Client ID & Client Secret.
 
-## Project setup
+Then click `EDIT SETTINGS` Button, add `http://localhost:3000` to Redirect URIs
+
+### 2. Get Authorization Code
+
+Visit following URL after replace `$CLIENT_ID` to yours
+
+```
+https://accounts.spotify.com/en/authorize?client_id=$CLIENT_ID&response_type=code&redirect_uri=http:%2F%2Flocalhost:3000&scope=user-read-currently-playing%20user-top-read
+```
+
+Agree to this application to access your info, after that your will be redirect to a new page, the url like this: `http://localhost:3000?code=$CODE`
+
+this `$CODE` is your Authorization Code, it will be used to generate access_token at next step.
+
+### 3. Get Access Token
+
+the last step, use the `$CLIENT_ID` and `$CLIENT_SECRET` from step 1, `$CODE` from step 2 to replace the shell command below
+
+```shell
+curl -d client_id=$CLIENT_ID -d client_secret=$CLIENT_SECRET -d grant_type=authorization_code -d code=$CODE -d redirect_uri=http://localhost:3000 https://accounts.spotify.com/api/token
+```
+
+after run it at your terminal, you'll get your `${REFRESH_TOKEN}`
+
+the output may like this:
+
+```json
+{
+    "access_token": "BQBi-jz.....yCVzcl",
+    "token_type": "Bearer",
+    "expires_in": 3600,
+    "refresh_token": "AQCBvdy70gtKvnrVIxe...",
+    "scope": "user-read-currently-playing user-top-read"
+}
+```
+
+if the response not return refresh_token, back to step 2 and retry.
+
+</p>
+</details>
+
+## 🖥 Project Setup
 
 1. Fork this repo
-1. Go to the repo **Settings > Secrets**
-1. Add the following environment variables:
-   - **GH_TOKEN:** The GitHub access token generated above.
-   - **GIST_ID:** The ID portion from your gist url: `https://gist.github.com/Aveek-Saha/`**`8335e85451541072dd25fda601129f7d`**.
-   - **CLIENT_ID:** Your Spotify `client_id`.
-   - **CLIENT_SECRET:** Your Spotify `client_secret`.
-   - **REFRESH_TOKEN:** The `refresh_token` generated.
-   - **TYPE:** The type of data generated on the gist. Can be one of `top_tracks`, `top_artists` or `recently_played`.
-   - **TIME_RANGE:** The time frame for computing `top_tracks` or `top_artists`. Can be one of `long_term`, `medium_term` or `short_term`.
+2. Go to your fork's `Settings` > `Environments` > `New environment` and create an environment called "prod"
+3. Choose your "prod" environment and `Add Secret` for each environment secret (below)
+4. Enable Actions on your fork via the 'Actions' tab
+5. Enable the 'spotify-box' Workflow via the 'Actions' tab
+6. Kick off a workflow run of the 'spotify-box' Workflow via Actions > spotify-box > Run workflow
 
-## Credits
-This code was inspired by [@matchai's bird-box](https://github.com/matchai/bird-box).
+## 🤫 Environment Secrets
+
+- **GIST_ID:** The ID portion from your gist url `https://gist.github.com/<github username>/`**`6d5f84419863089a167387da62dd7081`**.
+- **GH_TOKEN:** The GitHub token generated above.
+- **SPOTIFY_CLIENT_ID:** The Client ID you got from Spotify Developer Dashboard.
+- **SPOTIFY_CLIENT_SECRET:** The Client Secret you got from Spotify Developer Dashboard.
+- **SPOTIFY_REFRESH_TOKEN:** The Refresh Token you got from Spotify API.
+
+## 💸 Donations
+
+Feel free to use the GitHub Sponsor button to donate towards my work if you think this project is helpful. 🤗
